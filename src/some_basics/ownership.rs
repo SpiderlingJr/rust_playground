@@ -69,7 +69,42 @@ pub fn reference_and_borrowing() {
     println!("Length of '{}' is {}.", s1, len);
 
     fn get_len(s: &String) -> usize { // s is a refernce to a String
-        return s.len()
+        return s.len();
     } // s goes out of scope.
     //But it doesnt have ownership of what it refers to, so nothing happens.
+
+    /* This wont work, as borrowed values are immutable for the borrower!
+    fn change(some_string: &String) {
+        some_string.push_str(", world");
+    }
+
+     */
+
+    /* This will work, as the referenced value's mutability is explicitly stated
+    fn change(some_string: &mut String) {
+        some_string.push_str(", world");
+    }
+
+    But: there can only be ONE mutable reference in a scope at any given time.
+     */
 }
+
+
+pub fn dangling_references() {
+    /*let reference_to_nothing = dangle();
+
+    fn dangle() -> &String {
+        let s = String::from("hello");
+
+        &s // return a reference to a String
+    }   // that String goes out of scope here. The reference points to unallocated memory!
+    */
+
+    // Better.
+    fn no_dangle() -> String {
+        let s = String::from("hello");
+
+        s
+    }
+}
+
